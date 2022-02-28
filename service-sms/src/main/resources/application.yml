@@ -1,6 +1,14 @@
 server:
   port: 8120 # 服务端口
 spring:
+  #消息队列
+  rabbitmq:
+    host: 192.168.71.12
+    port: 5672
+    virtual-host: /srbhost200921
+    username: srbuser200921
+    password: 123456
+
   profiles:
     active: dev # 环境设置
   application:
@@ -13,6 +21,10 @@ spring:
       template-id: 908e94ccf08b4476ba6c876d13f084ad
       sms-sign-id: 2e65b1bb3d054466b82f0c9d125465e2
       app-code: 8fc141eaa3704f81a02460654c78011d
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 #nacos服务地址
 
 
   redis:
@@ -36,3 +48,18 @@ aliyun:
     key-secret: N7v6R4V3EJ1SGDZlsqtqo8QyVVMmtQ
     template-code: SMS_96695065
     sign-name: 谷粒
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 10000 #连接超时配置
+        readTimeout: 600000 #执行超时配置
+
+  #开启feign对sentinel的支持
+  sentinel:
+    enabled: true
+
+logging:
+  level:
+    com.atguigu.srb.sms.client.CoreUserInfoClient: DEBUG #以什么级别控制哪个接口

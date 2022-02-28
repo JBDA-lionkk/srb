@@ -1,7 +1,11 @@
 package com.atguigu.srb.core.service;
 
 import com.atguigu.srb.core.pojo.entity.LendItem;
+import com.atguigu.srb.core.pojo.vo.InvestVO;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface LendItemService extends IService<LendItem> {
 
+    String commitInvest(InvestVO investVO, HttpServletRequest request);
+
+    String notify(HttpServletRequest request);
+
+    List<LendItem> selectByLendId(Long lendId, Integer status);
+
+    List<LendItem> selectByLendId(Long lendId);
 }

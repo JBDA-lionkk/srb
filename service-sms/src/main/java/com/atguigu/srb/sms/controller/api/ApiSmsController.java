@@ -5,9 +5,8 @@ import com.atguigu.common.result.R;
 import com.atguigu.common.result.ResponseEnum;
 import com.atguigu.common.util.RandomUtils;
 import com.atguigu.common.util.RegexValidateUtils;
+import com.atguigu.srb.sms.client.CoreUserInfoClient;
 import com.atguigu.srb.sms.component.SmsComponent;
-import com.atguigu.srb.sms.service.SmsService;
-import com.atguigu.srb.sms.util.SmsProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/api/sms")
 @Api(tags = "短信管理")
-@CrossOrigin
 @Slf4j
 public class ApiSmsController {
 
@@ -30,6 +28,9 @@ public class ApiSmsController {
 
     @Resource
     private SmsComponent smsComponent;
+
+    @Resource
+    private CoreUserInfoClient userInfoClient;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -48,6 +49,10 @@ public class ApiSmsController {
         //随机生成的4位数验证码
         String code = RandomUtils.getFourBitRandom();
         map.put("code", code);
+
+        //判断手机号是否已经注册
+        boolean result = userInfoClient.checkMobile(mobile);
+        Assert.isTrue(!result, ResponseEnum.MOBILE_EXIST_ERROR);
 
         //连接阿里云短信服务接口 (暂时不能用)
 //        smsService.send(mobile, SmsProperties.TEMPLATE_CODE, map);

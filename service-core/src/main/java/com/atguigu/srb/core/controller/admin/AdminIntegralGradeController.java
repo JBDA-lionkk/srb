@@ -22,7 +22,6 @@ import java.util.List;
  * @author 严文豪
  * @since 2021-12-26
  */
-@CrossOrigin
 @RestController
 @RequestMapping("/admin/core/integralGrade")
 @Api(tags = "积分等级管理")

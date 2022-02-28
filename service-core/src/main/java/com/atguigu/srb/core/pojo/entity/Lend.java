@@ -14,6 +14,8 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableField;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -119,5 +121,8 @@ public class Lend implements Serializable {
     @TableLogic
     private Boolean deleted;
 
+    @ApiModelProperty(value = "其他参数")
+    @TableField(exist = false)
+    private Map<String, Object> param = new HashMap<>();
 
 }

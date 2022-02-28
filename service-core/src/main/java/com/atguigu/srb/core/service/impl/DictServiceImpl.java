@@ -97,6 +97,33 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         return dictList;
     }
 
+    @Override
+    public List<Dict> findByDictCode(String dictCode) {
+        //1.根据dictCode 获取所有行业
+        Dict dict = this.getOne(Wrappers.<Dict>lambdaQuery().eq(Dict::getDictCode, dictCode));
+
+        //2.获取
+        return this.listByParentId(dict.getId());
+    }
+
+    @Override
+    public String getNameByParentDictCodeAndValue(String dictCode, Integer value) {
+
+        //通过code获取父信息
+        Dict dict = this.getOne(Wrappers.<Dict>lambdaQuery().eq(Dict::getDictCode, dictCode));
+        if (dict == null) {
+            return "";
+        }
+
+        //根据父id和传入value获取字典名
+        dict = this.getOne(Wrappers.<Dict>lambdaQuery().eq(Dict::getParentId, dict.getId()).eq(Dict::getValue, value));
+        if (dict == null) {
+            return "";
+        }
+
+        return dict.getName();
+    }
+
     /**
      * 判断当前id所在的节点下是否有子节点
      *
